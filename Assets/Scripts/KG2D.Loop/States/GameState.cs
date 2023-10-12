@@ -9,7 +9,7 @@ namespace KG2D.Loop
         }
         public override void Tick()
         {
-            gameController.InputSystem.UpdateInputs();
+           
 
         }
         public override void FixedTick()
@@ -18,8 +18,8 @@ namespace KG2D.Loop
         }
         public override void LateTick()
         {
-            
-            
+
+            gameController.InputSystem.UpdateInputs();
         }
     }
 }
