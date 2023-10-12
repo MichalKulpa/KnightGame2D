@@ -28,12 +28,13 @@ namespace KG2D.Player
             animator = gameObject.GetComponent<Animator>();
             spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         }
-         
+
         public void Move()
-        {            
-            playerRB.velocity = new Vector2(Input.GetAxis("Horizontal")*speed, playerRB.velocity.y);
+        {
+            playerRB.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, playerRB.velocity.y);
             FlipSprite();
             animator.SetFloat("Speed", Mathf.Abs(playerRB.velocity.x));
+            animator.SetFloat("VertSpeed", playerRB.velocity.y);
         }
         public void Jump()
         {
@@ -42,7 +43,7 @@ namespace KG2D.Player
             {
                 playerRB.velocity = new Vector2(playerRB.velocity.x, jumpSpeed);
             }
-            animator.Play("HeroKnight_Jump");
+            
         }
         private bool IsGrounded()
         {
