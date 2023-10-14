@@ -8,6 +8,7 @@ namespace KG2D.Loop
     {
         public Action move;
         public Action jump;
+        public Action attack;
 
         public void UpdateInputs()
         {
@@ -18,6 +19,11 @@ namespace KG2D.Loop
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button0))
             {
                 jump?.Invoke();
+            }
+            if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetMouseButtonDown(0)
+                || Input.GetKeyDown(KeyCode.Joystick1Button1))
+            {
+                attack?.Invoke();
             }
         }
 

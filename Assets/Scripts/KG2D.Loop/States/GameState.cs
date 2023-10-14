@@ -6,11 +6,11 @@ namespace KG2D.Loop
         {
             gameController.InputSystem.move += gameController.PlayerMovement.Move;
             gameController.InputSystem.jump += gameController.PlayerMovement.Jump;
+            gameController.InputSystem.attack += gameController.PlayerMovement.Attack;
         }
         public override void Tick()
         {
-           
-
+            gameController.PlayerMovement.UpdateMovement();
         }
         public override void FixedTick()
         {
@@ -18,7 +18,6 @@ namespace KG2D.Loop
         }
         public override void LateTick()
         {
-
             gameController.InputSystem.UpdateInputs();
         }
     }

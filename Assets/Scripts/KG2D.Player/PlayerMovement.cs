@@ -15,9 +15,16 @@ namespace KG2D.Player
         private LayerMask groundMask;       
         
         private bool isGrouded;
+        //private bool isMoving;
+
         private Vector2 moveDirection;
+
         private float speed = 5f;
-        private float jumpSpeed = 8f;
+        private float jumpSpeed = 5f;
+        private float timeSinceAttack=0f;
+
+        private int currentAttack=0;
+
         private Rigidbody2D playerRB;
         private Animator animator;
         private SpriteRenderer spriteRenderer;
@@ -30,20 +37,47 @@ namespace KG2D.Player
         }
 
         public void Move()
-        {
-            playerRB.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, playerRB.velocity.y);
-            FlipSprite();
-            animator.SetFloat("Speed", Mathf.Abs(playerRB.velocity.x));
-            animator.SetFloat("VertSpeed", playerRB.velocity.y);
+        {                     
+                playerRB.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, playerRB.velocity.y);
+                FlipSprite();            
         }
         public void Jump()
         {
             isGrouded = IsGrounded();
-            if (isGrouded)
+            if (isGrouded )
             {
                 playerRB.velocity = new Vector2(playerRB.velocity.x, jumpSpeed);
+                animator.SetTrigger("Jump");
+            }        
+        }
+        public void Attack()
+        {
+            if (timeSinceAttack > 0.25f && playerRB.velocity == Vector2.zero)
+            {
+                
+                currentAttack++;
+
+                if (currentAttack > 3)
+                {
+                    currentAttack = 1;
+                }
+                if (timeSinceAttack > 1f)
+                {
+                    currentAttack = 1;
+                }
+
+                animator.SetTrigger("Attack" + currentAttack);
+                timeSinceAttack = 0f;
+                
             }
             
+
+        }
+        public void UpdateMovement()
+        {
+            animator.SetFloat("Speed", Mathf.Abs(playerRB.velocity.x));
+            animator.SetFloat("VertSpeed", playerRB.velocity.y);
+            timeSinceAttack += Time.deltaTime;
         }
         private bool IsGrounded()
         {
@@ -54,6 +88,7 @@ namespace KG2D.Player
             if (playerRB.velocity.x < 0) spriteRenderer.flipX = true;
             else spriteRenderer.flipX = false;
         }
+
         
         
     }

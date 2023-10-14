@@ -7,6 +7,17 @@ namespace KG2D.Player
     {
         [SerializeField]
         private int pleyerLives;
+
+        private Animator animator;
+        public void InitializeSystem()
+        {
+
+        }
+
+        public void Attack()
+        {
+
+        }
     }
 }
 
