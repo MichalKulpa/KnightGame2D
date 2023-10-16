@@ -10,16 +10,24 @@ namespace KG2D.Player
         [SerializeField]
         private Transform groundCheck;
         [SerializeField]
+        private Transform leftWallCheck;
+        [SerializeField]
+        private Transform rightWallCheck;
+        [SerializeField]
         private float checkRadius;
         [SerializeField]
         private LayerMask groundMask;
-        
-        
-        
-        private bool isGrouded;
-        //private bool isMoving;
+        [SerializeField]
+        private LayerMask wallMask;
 
-        private Vector2 moveDirection;
+
+
+        //private bool isGrounded;
+        //private bool isMoving;
+        private bool isWallSliding;
+
+
+        //private Vector2 moveDirection;
 
         private float speed = 5f;
         private float jumpSpeed = 5f;
@@ -46,20 +54,17 @@ namespace KG2D.Player
                 FlipSprite();            
         }
         public void Jump()
-        {
-            isGrouded = IsGrounded();
-            if (isGrouded )
+        {           
+            if (IsGrounded() )
             {
                 playerRB.velocity = new Vector2(playerRB.velocity.x, jumpSpeed);
-                animator.SetTrigger("Jump");
-                
+                animator.SetTrigger("Jump");                
             }        
         }
         public void Attack()
         {
-            if (timeSinceAttack > 0.25f && playerRB.velocity == Vector2.zero)
-            {
-                
+            if (timeSinceAttack > 0.25f && IsGrounded())
+            {               
                 currentAttack++;
 
                 if (currentAttack > 3)
@@ -72,28 +77,52 @@ namespace KG2D.Player
                 }
 
                 animator.SetTrigger("Attack" + currentAttack);
-                timeSinceAttack = 0f;
-                
+                timeSinceAttack = 0f;                
             }
-            
-
+        }
+        public void Block()
+        {
+            animator.SetTrigger("Block");            
         }
         public void Roll()
-        {
-            isGrouded = IsGrounded();
-            if (isGrouded)
+        {           
+            if (IsGrounded())
             {               
                 animator.SetTrigger("Roll");
-                StartCoroutine(RollForSeconds(0.65f));
-               
+                StartCoroutine(RollForSeconds(0.65f));              
+            }           
+        }
+        public void WallSlide()
+        {
+            if (!IsGrounded())
+            {
+                
+                if (WallCheck(leftWallCheck))
+                {
+                    spriteRenderer.flipX = true;
+                    animator.SetBool("WallSlide", true);
+                }
+                else if (WallCheck(rightWallCheck))
+                {
+                    spriteRenderer.flipX = false;
+                    animator.SetBool("WallSlide", true);
+                }
+            }
+            else if (IsGrounded())
+            {
+                animator.SetBool("WallSlide", false);
             }
             
         }
-
+        private bool WallCheck(Transform wallCheck)
+        {
+            return Physics2D.OverlapCircle(wallCheck.position, checkRadius, wallMask);
+        }
         public void UpdateMovement()
         {
             animator.SetFloat("Speed", Mathf.Abs(playerRB.velocity.x));
             animator.SetFloat("VertSpeed", playerRB.velocity.y);
+            WallSlide();
             timeSinceAttack += Time.deltaTime;
             
         }
@@ -123,9 +152,6 @@ namespace KG2D.Player
 
             speed = speed / 1.5f;
             bodyColider.enabled = !bodyColider.enabled;
-        }
-        
-        
+        }                
     }
-
 }

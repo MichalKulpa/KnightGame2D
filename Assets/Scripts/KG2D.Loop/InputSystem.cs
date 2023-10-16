@@ -10,6 +10,7 @@ namespace KG2D.Loop
         public Action jump;
         public Action attack;
         public Action roll;
+        public Action block;
 
         public void UpdateInputs()
         {
@@ -29,6 +30,10 @@ namespace KG2D.Loop
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 roll?.Invoke();
+            }
+            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            {
+                block?.Invoke();
             }
 
         }
