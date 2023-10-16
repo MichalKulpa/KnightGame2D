@@ -7,6 +7,7 @@ namespace KG2D.Loop
             gameController.InputSystem.move += gameController.PlayerMovement.Move;
             gameController.InputSystem.jump += gameController.PlayerMovement.Jump;
             gameController.InputSystem.attack += gameController.PlayerMovement.Attack;
+            gameController.InputSystem.roll += gameController.PlayerMovement.Roll;
         }
         public override void Tick()
         {

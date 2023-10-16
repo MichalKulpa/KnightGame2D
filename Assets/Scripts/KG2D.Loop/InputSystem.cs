@@ -9,6 +9,7 @@ namespace KG2D.Loop
         public Action move;
         public Action jump;
         public Action attack;
+        public Action roll;
 
         public void UpdateInputs()
         {
@@ -25,6 +26,11 @@ namespace KG2D.Loop
             {
                 attack?.Invoke();
             }
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                roll?.Invoke();
+            }
+
         }
 
 
